@@ -18,6 +18,7 @@ export default function ItemsPage() {
       setLoading(true);
 
       const res = await api.get(`/items?page=${pageNumber}`);
+      console.log("Fetched items:", res.data);
 
       setItems(res.data.data);
       setPage(res.data.current_page);
@@ -88,13 +89,14 @@ export default function ItemsPage() {
                   Loading items...
                 </td>
               </tr>
-            ) : items.length === 0 ? (
+            ) : !Array.isArray(items) || items.length === 0 ? (
               <tr>
                 <td colSpan="7" className="p-6 text-center text-gray-500">
                   No items found.
                 </td>
               </tr>
             ) : (
+              Array.isArray(items) &&
               items.map((item) => (
                 <tr key={item.id} className="text-center hover:bg-gray-50">
                   <td className="p-2 border">{item.id}</td>
